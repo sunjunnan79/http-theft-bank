@@ -17,6 +17,11 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
+// SetResponseHeader ... 设置响应头
+func SetResponseHeader(c *gin.Context, key, value string) {
+	c.Header(key, value)
+}
+
 func SendResponse(c *gin.Context, err error, data interface{}) {
 	code, message := errno.DecodeErr(err)
 	log.Info(message,

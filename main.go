@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"go.uber.org/zap"
+	"http-theft-bank/pkg/cache"
 	"net/http"
 	"time"
 
@@ -34,6 +35,9 @@ func main() {
 
 	// Set gin mode.
 	gin.SetMode(viper.GetString("runmode"))
+
+	// Init Cache
+	cache.LocalStorage.Init()
 
 	// Create the Gin engine.
 	g := gin.New()
