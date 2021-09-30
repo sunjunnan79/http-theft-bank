@@ -3,6 +3,7 @@ package router
 import (
 	"net/http"
 
+	"http-theft-bank/handler/checkpoint2"
 	"http-theft-bank/handler/sd"
 	"http-theft-bank/router/middleware"
 
@@ -29,6 +30,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
 		svcd.GET("/ram", sd.RAMCheck)
+	}
+
+	organization := g.Group("/organization")
+	{
+		organization.GET("/secret_key", checkpoint2.GetSercetKey)
 	}
 
 	return g
