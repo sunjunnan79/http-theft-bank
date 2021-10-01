@@ -17,8 +17,6 @@ var (
 
 // Context is the context of the JSON web token.
 type Context struct {
-	// ID       uint64
-	// Username string
 	Code string
 }
 
@@ -48,7 +46,6 @@ func Parse(tokenString string, secret string) (*Context, error) {
 
 		// Read the token if it's valid.
 	} else if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		// ctx.ID = uint64(claims["id"].(float64))
 		ctx.Code = claims["code"].(string)
 		return ctx, nil
 

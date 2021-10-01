@@ -1,6 +1,7 @@
 package checkpoint1
 
 import (
+	"errors"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
@@ -13,7 +14,8 @@ import (
 // CheckCode ... header的 code 生成token
 func CheckCode(c *gin.Context) {
 	code := c.Request.Header.Get("code")
-	if err := c.BindJSON(&code); err != nil || code == "" {
+	if code == "" {
+		err := errors.New("未接收到code字段")
 		handler.SendError(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
 		return
 	}
