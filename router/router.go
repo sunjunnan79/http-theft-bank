@@ -1,6 +1,7 @@
 package router
 
 import (
+	"http-theft-bank/handler/checkpoint5"
 	"net/http"
 
 	"http-theft-bank/handler/sd"
@@ -21,6 +22,12 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
+
+	cp5 := g.Group("/muxi/backend/computer/examination")
+	{
+		cp5.GET("", checkpoint5.GetText)
+		cp5.POST("", checkpoint5.UploadFile)
+	}
 
 	// The health check handlers
 	svcd := g.Group("/sd")
