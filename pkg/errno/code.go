@@ -15,4 +15,9 @@ var (
 	ErrUserNotFound      = &Errno{Code: 20102, Message: "The user was not found."}
 	ErrTokenInvalid      = &Errno{Code: 20103, Message: "The token was invalid."}
 	ErrPasswordIncorrect = &Errno{Code: 20104, Message: "The password was incorrect."}
+
+	// checkpoint3 errors
+	ErrGet  = &Errno{Code: 20301, Message: "Your attempt failed"}
+	ErrPost = &Errno{Code: 20302, Message: "Your attempt failed"}
+	ErrDel  = &Errno{Code: 20303, Message: "Your attempt failed"}
 )

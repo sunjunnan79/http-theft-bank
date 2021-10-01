@@ -1,13 +1,14 @@
 package checkpoint5
 
 import (
-	"github.com/gin-gonic/gin"
 	"http-theft-bank/handler"
 	"http-theft-bank/pkg/errno"
 	"path"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // UploadFile ... 上传全排列.go 文件，线上 ac
