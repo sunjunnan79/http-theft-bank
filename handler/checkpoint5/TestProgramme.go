@@ -4,16 +4,17 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"syscall"
 	"time"
 )
 
 type process struct {
-	Cmd       *exec.Cmd
-	MissionId int
-	Stdout    bytes.Buffer
-	Stderr    bytes.Buffer
+	Cmd    *exec.Cmd
+	Stdout *bytes.Buffer
+	Stderr *bytes.Buffer
+	File   *os.File // 用于标志打开过的文件，方便关闭
 }
 
 // TODO: 测试用例个数 n 从配置文件中导入
@@ -39,15 +40,14 @@ func testProgramme(fileName, fileNameOnly string) error {
 	}
 
 	// go run
-	var processSet []process
+	var processSet []*process
 	for i := 0; i < len(TestFiles); i++ {
-		var p process
-		p.Cmd = exec.Command("./file/bin/"+fileNameOnly, "0<"+TestFiles[i])
-		p.Cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} // 每个进程单独一个组
-		p.MissionId = i
-		p.Cmd.Stdout = &p.Stdout
-		p.Cmd.Stderr = &p.Stderr
-		err := p.Cmd.Start()
+		p, err := initProcess(fileNameOnly, TestFiles[i])
+		if err != nil {
+			killAllProcess(processSet)
+			return err
+		}
+		err = p.Cmd.Start()
 		if err != nil {
 			// kill all process and return
 			killAllProcess(processSet)
@@ -75,17 +75,21 @@ func testProgramme(fileName, fileNameOnly string) error {
 			doneCount++
 			fmt.Println("one done")
 		case err := <-errChannel:
+			closeAllFile(processSet)
 			killAllProcess(processSet)
 			return err
 		case <-time.After(time.Second * 2):
 			// fmt.Println("over time and kill all process")
+			closeAllFile(processSet)
 			killAllProcess(processSet)
 			return errors.New("over time")
 		}
 	}
 
-	// check stdout
-	// TODO: find a way to get stdout, stdout is empty now.
+	// 关掉所有文件
+	closeAllFile(processSet)
+
+	// TODO: check stdout
 	for i := 0; i < len(processSet); i++ {
 		fmt.Println(processSet[i].Stdout.String())
 	}
@@ -93,7 +97,32 @@ func testProgramme(fileName, fileNameOnly string) error {
 	return nil
 }
 
-func processMonitor(p process, errChannel chan<- error, doneChannel chan<- int) {
+// initProcess ... 初始化进程
+func initProcess(fileNameOnly, testFileName string) (*process, error) {
+	p := new(process)
+	p.Cmd = exec.Command("./file/bin/" + fileNameOnly)
+	p.Cmd.SysProcAttr = &syscall.SysProcAttr{Setpgid: true} // 每个进程单独一个组
+
+	// 打开测试文件
+	file, err := os.Open(testFileName)
+	if err != nil {
+		return nil, err
+	}
+
+	p.Cmd.Stdin = file
+	p.File = file
+
+	// 获取标准输出
+	p.Stdout = new(bytes.Buffer)
+	p.Stderr = new(bytes.Buffer)
+	p.Cmd.Stdout = p.Stdout
+	p.Cmd.Stderr = p.Stderr
+
+	return p, nil
+}
+
+// processMonitor ... 用于 goroutine 等待
+func processMonitor(p *process, errChannel chan<- error, doneChannel chan<- int) {
 	err := p.Cmd.Wait()
 	if err != nil {
 		errChannel <- err
@@ -104,9 +133,20 @@ func processMonitor(p process, errChannel chan<- error, doneChannel chan<- int) 
 	return
 }
 
-func killAllProcess(processSet []process) {
+func killAllProcess(processSet []*process) {
 	for i := 0; i < len(processSet); i++ {
 		err := syscall.Kill(-processSet[i].Cmd.Process.Pid, syscall.SIGKILL)
+		if err != nil {
+			// log
+			fmt.Println("kill all process failed: " + err.Error())
+		}
+	}
+}
+
+// closeAllFile ... 关掉所有文件
+func closeAllFile(processSet []*process) {
+	for i := 0; i < len(processSet); i++ {
+		err := processSet[i].File.Close()
 		if err != nil {
 			// log
 			fmt.Println("kill all process failed: " + err.Error())
