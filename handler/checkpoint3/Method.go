@@ -23,3 +23,7 @@ func PutMethod(c *gin.Context) {
 func DelMethod(c *gin.Context) {
 	handler.SendBadRequest(c, errno.ErrDel, nil, "error")
 }
+
+func PatchMethod(c *gin.Context) {
+	handler.SendBadRequest(c, errno.ErrPatch, nil, "error")
+}

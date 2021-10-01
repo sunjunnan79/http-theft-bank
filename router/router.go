@@ -30,6 +30,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		cp3.POST("", checkpoint3.PostMethod)
 		cp3.PUT("", checkpoint3.PutMethod)
 		cp3.DELETE("", checkpoint3.DelMethod)
+		cp3.PATCH("", checkpoint3.PatchMethod)
 	}
 
 	cp5 := g.Group("/muxi/backend/computer/examination")
