@@ -33,6 +33,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	organization := g.Group("/organization")
+	organization.Use(middleware.AuthMiddleware())
 	{
 		organization.GET("/secret_key", checkpoint2.GetSercetKey)
 	}

@@ -9,10 +9,12 @@ var (
 	ErrValidation = &Errno{Code: 20001, Message: "Validation failed."}
 	ErrDatabase   = &Errno{Code: 20002, Message: "Database error."}
 	ErrToken      = &Errno{Code: 20003, Message: "Error occurred while signing the JSON web token."}
+	ErrDecode     = &Errno{Code: 20004, Message: "Error occurred while decoding the encoded body."}
 
 	// user errors
 	ErrEncrypt           = &Errno{Code: 20101, Message: "Error occurred while encrypting the user password."}
 	ErrUserNotFound      = &Errno{Code: 20102, Message: "The user was not found."}
 	ErrTokenInvalid      = &Errno{Code: 20103, Message: "The token was invalid."}
 	ErrPasswordIncorrect = &Errno{Code: 20104, Message: "The password was incorrect."}
+	ErrBodyInvalid       = &Errno{Code: 20105, Message: "The parsed body was invalid."}
 )
