@@ -5,6 +5,7 @@ go 1.14
 replace http-theft-bank => ./
 
 require (
+	github.com/Workiva/go-datastructures v1.0.53
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
