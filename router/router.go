@@ -1,6 +1,7 @@
 package router
 
 import (
+	"http-theft-bank/handler/checkpoint1"
 	"http-theft-bank/handler/checkpoint5"
 	"net/http"
 
@@ -22,6 +23,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.NoRoute(func(c *gin.Context) {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
+
+	cp1 := g.Group("/origanization")
+	{
+		cp1.GET("/code", checkpoint1.CheckCode)
+	}
 
 	cp5 := g.Group("/muxi/backend/computer/examination")
 	{
