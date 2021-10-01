@@ -12,13 +12,12 @@ import (
 
 var (
 	// ErrMissingHeader means the `Authorization` header was empty.
-	ErrMissingHeader = errors.New("The length of the `Authorization` header is zero.")
+	ErrMissingHeader = errors.New("the length of the `Authorization` header is zero")
 )
 
 // Context is the context of the JSON web token.
 type Context struct {
-	ID       uint64
-	Username string
+	Code string
 }
 
 // secretFunc validates the secret format.
@@ -47,8 +46,7 @@ func Parse(tokenString string, secret string) (*Context, error) {
 
 		// Read the token if it's valid.
 	} else if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		ctx.ID = uint64(claims["id"].(float64))
-		ctx.Username = claims["username"].(string)
+		ctx.Code = claims["code"].(string)
 		return ctx, nil
 
 		// Other errors.
@@ -83,10 +81,9 @@ func Sign(ctx *gin.Context, c Context, secret string) (tokenString string, err e
 	}
 	// The token content.
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":       c.ID,
-		"username": c.Username,
-		"nbf":      time.Now().Unix(),
-		"iat":      time.Now().Unix(),
+		"code": c.Code,
+		"nbf":  time.Now().Unix(),
+		"iat":  time.Now().Unix(),
 	})
 	// Sign the token with the specified secret.
 	tokenString, err = token.SignedString([]byte(secret))
