@@ -13,8 +13,9 @@ type getSercetKeyResponse struct {
 }
 
 func GetSercetKey(c *gin.Context) {
+	content := viper.GetString("sercet_key") + " : " + viper.GetString("error_code")
 	getSercetKeyRes := getSercetKeyResponse{
-		SercetKey: encrypt.Base64Encode([]byte(viper.GetString("sercet_key"))),
+		SercetKey: encrypt.Base64Encode([]byte(content)),
 	}
 	handler.SendResponse(c, nil, getSercetKeyRes)
 }
