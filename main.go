@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"http-theft-bank/pkg/cache"
+	"http-theft-bank/pkg/text"
 	"net/http"
 	"time"
 
@@ -39,8 +40,13 @@ func main() {
 	// Init Cache
 	cache.LocalStorage.Init()
 
+	text.InitText()
+
 	// Create the Gin engine.
 	g := gin.New()
+
+	// Set a lower memory limit for multipart forms (default is 32 MiB)
+	g.MaxMultipartMemory = 8 << 20
 
 	// Routes.
 	router.Load(
