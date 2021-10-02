@@ -36,14 +36,14 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	organization := g.Group("/api/v1/organization")
 	{
 		organization.GET("/code", checkpoint1.CheckCode)
-		organization.GET("/secret_key", middleware.AuthMiddleware(),checkpoint2.GetSecretKey)
-		organization.GET("/iris_sample",middleware.AuthMiddleware(), checkpoint4.UserGetImage)
+		organization.GET("/secret_key", middleware.AuthMiddleware(), checkpoint2.GetSecretKey)
+		organization.GET("/iris_sample", middleware.AuthMiddleware(), checkpoint4.UserGetImage)
 	}
 
 	bank := g.Group("/api/v1/bank")
 	bank.Use(middleware.AuthMiddleware())
 	{
-		bank.GET("/gate",checkpoint3.GetMethod)
+		bank.GET("/gate", checkpoint3.GetMethod)
 		bank.POST("/gate", checkpoint3.PostMethod)
 		bank.PUT("/gate", checkpoint3.PutMethod)
 		bank.DELETE("/gate", checkpoint3.DelMethod)
