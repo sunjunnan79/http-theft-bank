@@ -1,13 +1,15 @@
 package checkpoint5
 
 import (
-	"github.com/gin-gonic/gin"
 	"http-theft-bank/handler"
 	"http-theft-bank/pkg/errno"
+	"http-theft-bank/pkg/text"
 	"path"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/gin-gonic/gin"
 )
 
 // UploadFile ... 上传全排列.go 文件，线上 ac
@@ -41,7 +43,9 @@ func UploadFile(c *gin.Context) {
 	}
 
 	// response
-	handler.SendResponse(c, errno.OK, nil)
+	handler.SendResponse(c, errno.OK, handler.TextInfo{
+		Text: text.Text5Success,
+	})
 	return
 }
 

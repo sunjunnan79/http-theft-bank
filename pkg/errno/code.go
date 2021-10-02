@@ -15,4 +15,9 @@ var (
 	ErrUserNotFound      = &Errno{Code: 20102, Message: "The user was not found."}
 	ErrTokenInvalid      = &Errno{Code: 20103, Message: "The token was invalid."}
 	ErrPasswordIncorrect = &Errno{Code: 20104, Message: "The password was incorrect."}
+	ErrDecode            = &Errno{Code: 20105, Message: "Error occurred while decoding the error code."}
+
+	// checkpoint3 errors
+	ErrWrongMethod = &Errno{Code: 20301,Message: "你因为使用\"错误的方法\"写入病毒，被银行安全系统识别。很遗憾，你被逮捕了。（请尝试使用\"其他方法\"重新访问)"}
+	ErrMatch = &Errno{Code: 20305, Message: "the decoded error code is not match."}
 )
