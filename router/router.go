@@ -26,9 +26,16 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
-	cp1 := g.Group("/origanization")
+
+	cp1 := g.Group("/organization")
 	{
 		cp1.GET("/code", checkpoint1.CheckCode)
+	}
+
+	cp2 := g.Group("/organization")
+	cp2.Use(middleware.AuthMiddleware())
+	{
+		cp2.GET("/secret_key", checkpoint2.GetSercetKey)
 	}
 
 	cp3 := g.Group("/bank/gate")
@@ -53,12 +60,6 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
 		svcd.GET("/ram", sd.RAMCheck)
-	}
-
-	organization := g.Group("/organization")
-	organization.Use(middleware.AuthMiddleware())
-	{
-		organization.GET("/secret_key", checkpoint2.GetSercetKey)
 	}
 
 	return g
