@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"http-theft-bank/pkg/text"
 	"os"
 	"os/exec"
 	"sort"
@@ -100,9 +100,6 @@ func testProgramme(fileName, fileNameOnly string) error {
 
 	for i, process := range processSet {
 		go checkRes(i, process.Stdout.String(), exitChannel, len(processSet), okChannel)
-		// if err := checkRes(i, process.Stdout.String()); err != nil {
-		// 	return err
-		// }
 	}
 
 	for n := 0; n != len(processSet); {
@@ -117,21 +114,8 @@ func testProgramme(fileName, fileNameOnly string) error {
 }
 
 func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan int) {
-	// 获取答案并处理为[]string
-	var answers []string
-	{
-		fimename := "./file/testSample/test" + strconv.Itoa(num+1) + "_result.txt"
-		file, err := os.Open(fimename)
-		if err != nil {
-			panic(err)
-		}
-		defer file.Close()
-		content, _ := ioutil.ReadAll(file)
 
-		answers = strings.Split(string(content), string(rune(10)))
-	}
-
-	answers := A[num]
+	answers := text.Answers[num]
 
 	var AnswerMap = make(map[string]int)
 	for _, answer := range answers {
