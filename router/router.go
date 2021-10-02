@@ -3,10 +3,12 @@ package router
 import (
 	"http-theft-bank/handler/checkpoint1"
 	"http-theft-bank/handler/checkpoint3"
+	"http-theft-bank/handler/checkpoint4"
 	"http-theft-bank/handler/checkpoint5"
 	"net/http"
 
 	"http-theft-bank/handler/checkpoint2"
+
 	"http-theft-bank/handler/sd"
 	"http-theft-bank/router/middleware"
 
@@ -30,6 +32,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	cp1 := g.Group("/organization")
 	{
 		cp1.GET("/code", checkpoint1.CheckCode)
+		cp1.GET("/lris_sample", checkpoint4.UserGetImage)
 	}
 
 	cp2 := g.Group("/organization")
@@ -41,11 +44,19 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	cp3 := g.Group("/bank/gate")
 	cp3.Use(middleware.AuthMiddleware())
 	{
+
 		cp3.GET("", checkpoint3.GetMethod)
 		cp3.POST("", checkpoint3.PostMethod)
 		cp3.PUT("", checkpoint3.PutMethod)
 		cp3.DELETE("", checkpoint3.DelMethod)
 		cp3.PATCH("", checkpoint3.PatchMethod)
+	}
+
+	cp4 := g.Group("/bank")
+	{
+		cp4.GET("/Iris_recognition_gate", checkpoint4.BackTips)
+		cp4.POST("/Iris_recognition_gate", checkpoint4.VerifyParameter)
+
 	}
 
 	cp5 := g.Group("/muxi/backend/computer/examination")
