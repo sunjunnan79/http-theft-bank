@@ -5,7 +5,7 @@ go 1.14
 replace http-theft-bank => ./
 
 require (
-	github.com/Workiva/go-datastructures v1.0.53
+	github.com/Grand-Theft-Auto-In-CCNU-MUXI/hacker-support v0.0.0-20211001034205-6b6ee7af3d8c
 	github.com/dgraph-io/ristretto v0.1.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.4
@@ -20,4 +20,5 @@ require (
 	go.uber.org/zap v1.19.1
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
+	gopkg.in/yaml.v2 v2.4.0
 )

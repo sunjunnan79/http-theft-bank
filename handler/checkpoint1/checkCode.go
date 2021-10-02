@@ -16,7 +16,7 @@ func CheckCode(c *gin.Context) {
 	code := c.Request.Header.Get("code")
 	if code == "" {
 		err := errors.New("未接收到code字段")
-		handler.SendError(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
+		handler.SendBadRequest(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
 		return
 	}
 
@@ -30,5 +30,7 @@ func CheckCode(c *gin.Context) {
 
 	handler.SetResponseHeader(c, "token", Token)
 
-	handler.SendResponse(c, errno.OK, text.Text1Scene)
+	handler.SendResponse(c, errno.OK, handler.TextInfo{
+		Text: text.Text1Scene,
+	})
 }

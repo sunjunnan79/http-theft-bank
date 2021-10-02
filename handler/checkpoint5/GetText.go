@@ -14,5 +14,7 @@ func GetText(c *gin.Context) {
 
 	// 解析 token
 
-	handler.SendResponse(c, errno.OK, text.Text5Scene)
+	handler.SendResponse(c, errno.OK, handler.TextInfo{
+		Text: text.Text5Scene,
+	})
 }
