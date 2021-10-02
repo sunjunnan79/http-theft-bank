@@ -35,10 +35,11 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	cp2 := g.Group("/organization")
 	cp2.Use(middleware.AuthMiddleware())
 	{
-		cp2.GET("/secret_key", checkpoint2.GetSercetKey)
+		cp2.GET("/secret_key", checkpoint2.GetSecretKey)
 	}
 
 	cp3 := g.Group("/bank/gate")
+	cp3.Use(middleware.AuthMiddleware())
 	{
 		cp3.GET("", checkpoint3.GetMethod)
 		cp3.POST("", checkpoint3.PostMethod)
@@ -48,6 +49,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	}
 
 	cp5 := g.Group("/muxi/backend/computer/examination")
+	cp5.Use(middleware.AuthMiddleware())
 	{
 		cp5.GET("", checkpoint5.GetText)
 		cp5.POST("", checkpoint5.UploadFile)

@@ -3,6 +3,7 @@ package checkpoint5
 import (
 	"http-theft-bank/handler"
 	"http-theft-bank/pkg/errno"
+	"http-theft-bank/pkg/text"
 	"path"
 	"strconv"
 	"strings"
@@ -42,7 +43,9 @@ func UploadFile(c *gin.Context) {
 	}
 
 	// response
-	handler.SendResponse(c, errno.OK, nil)
+	handler.SendResponse(c, errno.OK, handler.TextInfo{
+		Text: text.Text5Success,
+	})
 	return
 }
 

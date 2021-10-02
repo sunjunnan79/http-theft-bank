@@ -31,6 +31,6 @@ func CheckCode(c *gin.Context) {
 	handler.SetResponseHeader(c, "token", Token)
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
-		Text: text.Text1Scene,
+		Text: text.Text1Success,
 	})
 }
