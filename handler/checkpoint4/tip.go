@@ -1,10 +1,14 @@
 package checkpoint4
 
 import (
-	"github.com/gin-gonic/gin"
 	"http-theft-bank/handler"
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // BackTips
@@ -20,6 +24,8 @@ import (
 // @Failure 500 {object} handler.Response
 // @Router /bank/iris_recognition_gate [get]
 func BackTips(c *gin.Context) {
+	log.Info("Message BackTips function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text: text.Text4scene,

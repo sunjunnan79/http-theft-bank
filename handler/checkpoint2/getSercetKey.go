@@ -2,12 +2,15 @@ package checkpoint2
 
 import (
 	"http-theft-bank/handler"
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
 
 	"github.com/Grand-Theft-Auto-In-CCNU-MUXI/hacker-support/encrypt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 // GetSecretKey ... 获取
@@ -23,6 +26,9 @@ import (
 // @Failure 500 {object} handler.Response
 // @Router /organization/secret_key [get]
 func GetSecretKey(c *gin.Context) {
+	log.Info("Message GetSecretKey function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	content := viper.GetString("sercet_key") + " : " + viper.GetString("error_code")
 	secretKey := encrypt.Base64Encode([]byte(content))
 	handler.SendResponse(c, errno.OK, handler.TextInfo{

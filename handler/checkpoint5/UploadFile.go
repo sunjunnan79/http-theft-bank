@@ -2,14 +2,17 @@ package checkpoint5
 
 import (
 	"http-theft-bank/handler"
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
 	"path"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // UploadFile ... 上传全排列.go 文件，线上 ac
@@ -26,7 +29,8 @@ import (
 // @Failure 500 {object} handler.Response
 // @Router /muxi/backend/computer/examination [post]
 func UploadFile(c *gin.Context) {
-	// log
+	log.Info("Message UploadFile function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
 
 	// 解析 token
 

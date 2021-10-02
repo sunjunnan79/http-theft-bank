@@ -7,8 +7,10 @@ import (
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/pkg/token"
+	"http-theft-bank/util"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // CheckCode ... header的 code 生成token
@@ -23,6 +25,9 @@ import (
 // @Failure 500 {object} handler.Response
 // @Router /organization/code [get]
 func CheckCode(c *gin.Context) {
+	log.Info("Message CheckCode function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	code := c.Request.Header.Get("code")
 	if code == "" {
 		err := errors.New("未接收到code字段")

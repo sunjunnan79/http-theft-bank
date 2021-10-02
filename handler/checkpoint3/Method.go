@@ -1,7 +1,9 @@
 package checkpoint3
 
 import (
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
 	"strings"
 
 	"http-theft-bank/handler"
@@ -10,13 +12,20 @@ import (
 	"github.com/Grand-Theft-Auto-In-CCNU-MUXI/hacker-support/encrypt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 func GetMethod(c *gin.Context) {
+	log.Info("Message GetMethod function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	handler.SendBadRequest(c, errno.ErrWrongMethod, nil, "")
 }
 
 func PostMethod(c *gin.Context) {
+	log.Info("Message PostMethod function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	handler.SendBadRequest(c, errno.ErrWrongMethod, nil, "")
 
 }
@@ -35,6 +44,9 @@ func PostMethod(c *gin.Context) {
 // @Failure 500 {object} handler.Response
 // @Router /bank/gate [put]
 func PutMethod(c *gin.Context) {
+	log.Info("Message PutMethod function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	var data handler.Request
 	if err := c.ShouldBindJSON(&data); err != nil {
 		handler.SendBadRequest(c, errno.ErrBind, nil, err.Error())
@@ -58,9 +70,15 @@ func PutMethod(c *gin.Context) {
 }
 
 func DelMethod(c *gin.Context) {
+	log.Info("Message DelMethod function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	handler.SendBadRequest(c, errno.ErrWrongMethod, nil, "")
 }
 
 func PatchMethod(c *gin.Context) {
+	log.Info("Message PatchMethod function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	handler.SendBadRequest(c, errno.ErrWrongMethod, nil, "")
 }
