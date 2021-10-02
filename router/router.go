@@ -1,8 +1,8 @@
 package router
 
 import (
-	"http-theft-bank/handler/checkpoint3"
 	"http-theft-bank/handler/checkpoint1"
+	"http-theft-bank/handler/checkpoint3"
 	"http-theft-bank/handler/checkpoint5"
 	"net/http"
 
@@ -26,11 +26,17 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
-  cp1 := g.Group("/origanization")
+	cp1 := g.Group("/organization")
 	{
 		cp1.GET("/code", checkpoint1.CheckCode)
 	}
-  
+
+	cp2 := g.Group("/organization")
+	cp2.Use(middleware.AuthMiddleware())
+	{
+		cp2.GET("/secret_key", checkpoint2.GetSercetKey)
+	}
+
 	cp3 := g.Group("/bank/gate")
 	{
 		cp3.GET("", checkpoint3.GetMethod)
@@ -38,7 +44,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		cp3.PUT("", checkpoint3.PutMethod)
 		cp3.DELETE("", checkpoint3.DelMethod)
 		cp3.PATCH("", checkpoint3.PatchMethod)
-  }
+	}
 
 	cp5 := g.Group("/muxi/backend/computer/examination")
 	{
@@ -53,12 +59,6 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		svcd.GET("/disk", sd.DiskCheck)
 		svcd.GET("/cpu", sd.CPUCheck)
 		svcd.GET("/ram", sd.RAMCheck)
-	}
-
-	organization := g.Group("/organization")
-	organization.Use(middleware.AuthMiddleware())
-	{
-		organization.GET("/secret_key", checkpoint2.GetSercetKey)
 	}
 
 	return g

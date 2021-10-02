@@ -10,7 +10,7 @@ import (
 )
 
 type CorrectRequest struct {
-	errorCode string `json:"error_code"`
+	ErrorCode string `json:"error_code"`
 }
 
 func GetMethod(c *gin.Context) {
@@ -29,13 +29,13 @@ func PutMethod(c *gin.Context) {
 		return
 	}
 
-	errorCode, err := encrypt.AESDecode(data.errorCode, viper.GetString("sercet_key"))
+	errorCode, err := encrypt.AESDecodeAfterBase64([]byte(data.ErrorCode), []byte(viper.GetString("sercet_key")))
 	if err != nil {
 		handler.SendBadRequest(c, errno.ErrDecode, nil, err.Error())
 		return
 	}
 
-	if errorCode != viper.GetString("error_code") {
+	if string(errorCode) != viper.GetString("error_code") {
 		handler.SendBadRequest(c, errno.ErrMatch, nil, err.Error())
 	}
 
