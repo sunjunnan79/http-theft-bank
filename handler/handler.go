@@ -3,6 +3,8 @@ package handler
 import (
 	"http-theft-bank/log"
 	"http-theft-bank/util"
+	//"image"
+	"io/ioutil"
 	"net/http"
 
 	"http-theft-bank/pkg/errno"
@@ -20,6 +22,13 @@ type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
+}
+
+var ImageBytes []byte
+
+func IamgeInit() string {
+	ImageBytes, _ := ioutil.ReadFile("./pkg/text/MuXieye.jpg")
+	return string(ImageBytes)
 }
 
 // SetResponseHeader ... 设置响应头
