@@ -12,6 +12,16 @@ import (
 )
 
 // CheckCode ... header的 code 生成token
+// @Summary send user token
+// @Description 站点1，返回token在头部
+// @Tags organization
+// @Accept  application/json
+// @Produce  application/json
+// @Param code header string true "代号名"
+// @Success 200 {object} handler.Response
+// @Failure 401 {object} handler.Response
+// @Failure 500 {object} handler.Response
+// @Router /organization/code [get]
 func CheckCode(c *gin.Context) {
 	code := c.Request.Header.Get("code")
 	if code == "" {
@@ -28,7 +38,7 @@ func CheckCode(c *gin.Context) {
 		return
 	}
 
-	handler.SetResponseHeader(c, "token", Token)
+	handler.SetResponseHeader(c, "passport", Token)
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text: text.Text1Success,

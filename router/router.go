@@ -13,6 +13,9 @@ import (
 	"http-theft-bank/router/middleware"
 
 	"github.com/gin-gonic/gin"
+
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 // Load loads the middlewares, routes, handlers.
@@ -25,45 +28,36 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 	g.Use(mw...)
 	// 404 Handler.
 	g.NoRoute(func(c *gin.Context) {
-		c.String(http.StatusNotFound, "The incorrect API route.")
+		c.JSON(http.StatusNotFound, "去哪呢？没路了哦！")
 	})
 
+	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	cp1 := g.Group("/organization")
+	organization := g.Group("/api/v1/organization")
 	{
-		cp1.GET("/code", checkpoint1.CheckCode)
-		cp1.GET("/lris_sample", checkpoint4.UserGetImage)
+		organization.GET("/code", checkpoint1.CheckCode)
+		organization.GET("/secret_key", middleware.AuthMiddleware(),checkpoint2.GetSecretKey)
+		organization.GET("/iris_sample",middleware.AuthMiddleware(), checkpoint4.UserGetImage)
 	}
 
-	cp2 := g.Group("/organization")
-	cp2.Use(middleware.AuthMiddleware())
+	bank := g.Group("/api/v1/bank")
+	bank.Use(middleware.AuthMiddleware())
 	{
-		cp2.GET("/secret_key", checkpoint2.GetSecretKey)
-	}
-
-	cp3 := g.Group("/bank/gate")
-	cp3.Use(middleware.AuthMiddleware())
-	{
-
-		cp3.GET("", checkpoint3.GetMethod)
-		cp3.POST("", checkpoint3.PostMethod)
-		cp3.PUT("", checkpoint3.PutMethod)
-		cp3.DELETE("", checkpoint3.DelMethod)
-		cp3.PATCH("", checkpoint3.PatchMethod)
-	}
-
-	cp4 := g.Group("/bank")
-	{
-		cp4.GET("/Iris_recognition_gate", checkpoint4.BackTips)
-		cp4.POST("/Iris_recognition_gate", checkpoint4.VerifyParameter)
+		bank.GET("/gate",checkpoint3.GetMethod)
+		bank.POST("/gate", checkpoint3.PostMethod)
+		bank.PUT("/gate", checkpoint3.PutMethod)
+		bank.DELETE("/gate", checkpoint3.DelMethod)
+		bank.PATCH("/gate", checkpoint3.PatchMethod)
+		bank.GET("/iris_recognition_gate", checkpoint4.BackTips)
+		bank.POST("/iris_recognition_gate", checkpoint4.VerifyParameter)
 
 	}
 
-	cp5 := g.Group("/muxi/backend/computer/examination")
-	cp5.Use(middleware.AuthMiddleware())
+	end := g.Group("/api/v1/muxi/backend/computer/examination")
+	end.Use(middleware.AuthMiddleware())
 	{
-		cp5.GET("", checkpoint5.GetText)
-		cp5.POST("", checkpoint5.UploadFile)
+		end.GET("", checkpoint5.GetText)
+		end.POST("", checkpoint5.UploadFile)
 	}
 
 	// The health check handlers
