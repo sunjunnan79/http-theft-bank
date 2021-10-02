@@ -15,7 +15,7 @@ import (
 // @Tags bank
 // @Accept  application/json
 // @Produce  application/json
-// @Param file form string true "file"
+// @Param file body string true "file,这个是用表单上传！！！！"
 // @Param code header string true "代号名"
 // @Param passport header string true "通行证"
 // @Success 200 {object} handler.Response

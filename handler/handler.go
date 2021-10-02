@@ -16,7 +16,7 @@ import (
 type Request struct {
 	Content   string `json:"content"`    // 目前只有 checkpoint3 需要这个请求，都放这
 	ExtraInfo string `json:"extra_info"` // 此字段暂时不用
-}// @Request
+} // @Request
 
 type TextInfo struct {
 	Text      string `json:"text"`
@@ -28,7 +28,7 @@ type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
-}// @Response
+} // @Response
 
 // SetResponseHeader ... 设置响应头
 func SetResponseHeader(c *gin.Context, key, value string) {
