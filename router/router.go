@@ -26,6 +26,7 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.String(http.StatusNotFound, "The incorrect API route.")
 	})
 
+
 	cp1 := g.Group("/organization")
 	{
 		cp1.GET("/code", checkpoint1.CheckCode)

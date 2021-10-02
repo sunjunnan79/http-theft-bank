@@ -11,6 +11,11 @@ import (
 	"go.uber.org/zap"
 )
 
+type TextInfo struct {
+	Text      string `json:"text"`
+	ExtraInfo string `json:"extra_info"`
+}
+
 type Response struct {
 	Code    int         `json:"code"`
 	Message string      `json:"message"`
