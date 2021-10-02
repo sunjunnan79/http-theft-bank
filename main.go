@@ -24,6 +24,18 @@ var (
 	cfg = pflag.StringP("config", "c", "", "apiserver config file path.")
 )
 
+// @title http-theft-bank
+// @version 1.0
+// @description a game to study http with go
+// @host localhost
+// @BasePath /api/v1
+
+// @tag.name organization
+// @tag.description 组织服务
+// @tag.name bank
+// @tag.description 银行服务
+// @tag.name end
+// @tag.description 终点服务
 func main() {
 	pflag.Parse()
 
