@@ -1,6 +1,8 @@
 package checkpoint3
 
 import (
+	"strings"
+
 	"http-theft-bank/handler"
 	"http-theft-bank/pkg/errno"
 
@@ -35,8 +37,9 @@ func PutMethod(c *gin.Context) {
 		return
 	}
 
-	if string(errorCode) != viper.GetString("error_code") {
-		handler.SendBadRequest(c, errno.ErrMatch, nil, err.Error())
+	if strings.Compare(string(errorCode), viper.GetString("error_code")) != 0 {
+		handler.SendBadRequest(c, errno.ErrMatch, nil, "不匹配，输入的error code无效")
+		return
 	}
 
 	handler.SendResponse(c, errno.OK, nil)
