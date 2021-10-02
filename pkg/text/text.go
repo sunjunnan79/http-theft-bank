@@ -23,15 +23,15 @@ var (
 	Text5Success string
 
 	ImageBytes []byte
+
+	// cp5: 全排列答案(3组数据)
+	Answers [3][]string
 )
 
 func IamgeInit() string {
 	ImageBytes, _ := ioutil.ReadFile("./pkg/text/MuXieye.jpg")
 	return string(ImageBytes)
 }
-
-// cp5: 全排列答案(3组数据)
-var Answers [3][]string
 
 // InitText ... 程序启动时读取文件
 func InitText() {
@@ -57,8 +57,9 @@ func InitText() {
 		defer file.Close()
 		content, _ := ioutil.ReadAll(file)
 
-		Answers[0] = strings.Split(string(content), string(rune(10)))
+		Answers[i] = strings.Split(string(content), string(rune(10)))
 	}
+
 	ImageBytes = []byte(readFile("./text/MuXieye.jpg"))
 }
 
