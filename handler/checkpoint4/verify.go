@@ -1,12 +1,16 @@
 package checkpoint4
 
 import (
-	"github.com/gin-gonic/gin"
 	"http-theft-bank/handler"
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
 	"path"
 	"strings"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // VerifyParameter
@@ -23,6 +27,9 @@ import (
 // @Failure 500 {object} handler.Response
 // @Router /organization/iris_sample [post]
 func VerifyParameter(c *gin.Context) {
+	log.Info("Message VerifyParameter function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
+
 	// FormFile方法会读取参数“upload”后面的文件名，返回值是一个File指针，和一个FileHeader指针，和一个err错误。
 	header, err := c.FormFile("image")
 	if err != nil {

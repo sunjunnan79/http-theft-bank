@@ -1,10 +1,14 @@
 package checkpoint5
 
 import (
-	"github.com/gin-gonic/gin"
 	"http-theft-bank/handler"
+	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
+	"http-theft-bank/util"
+
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 // GetText ... 获取站点5文本
@@ -21,7 +25,8 @@ import (
 // @Router /muxi/backend/computer/examination [get]
 // TODO：解析 token 然后把 代号名代入 Text5Scene
 func GetText(c *gin.Context) {
-	// log
+	log.Info("Message GetText function called.",
+		zap.String("X-Request-Id", util.GetReqID(c)))
 
 	// 解析 token
 
