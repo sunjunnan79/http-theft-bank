@@ -4,8 +4,12 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
+	"sort"
+	"strconv"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -33,7 +37,7 @@ var TestFiles = []string{
 
 func testProgramme(fileName, fileNameOnly string) error {
 	// go build
-	cmd := exec.Command("go", "build", "-o", "./file/bin", "./file/"+fileName)
+	cmd := exec.Command("go", "build", "-o", "./file/bin/"+fileNameOnly, "./file/"+fileName)
 	err := cmd.Run()
 	if err != nil {
 		return err
@@ -89,12 +93,94 @@ func testProgramme(fileName, fileNameOnly string) error {
 	// 关掉所有文件
 	closeAllFile(processSet)
 
-	// TODO: check stdout
-	for i := 0; i < len(processSet); i++ {
-		fmt.Println(processSet[i].Stdout.String())
+	exitChannel := make(chan error, len(processSet))
+	okChannel := make(chan int, 1)
+	defer close(okChannel)
+	defer close(exitChannel)
+
+	for i, process := range processSet {
+		go checkRes(i, process.Stdout.String(), exitChannel, len(processSet), okChannel)
+		// if err := checkRes(i, process.Stdout.String()); err != nil {
+		// 	return err
+		// }
 	}
 
+	for n := 0; n != len(processSet); {
+		select {
+		case err := <-exitChannel:
+			return err
+		case <-okChannel:
+			n++
+		}
+	}
 	return nil
+}
+
+func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan int) {
+	// 获取答案并处理为[]string
+	var answers []string
+	{
+		fimename := "./file/testSample/test" + strconv.Itoa(num+1) + "_result.txt"
+		file, err := os.Open(fimename)
+		if err != nil {
+			panic(err)
+		}
+		defer file.Close()
+		content, _ := ioutil.ReadAll(file)
+
+		answers = strings.Split(string(content), string(rune(10)))
+	}
+
+	answers := A[num]
+
+	var AnswerMap = make(map[string]int)
+	for _, answer := range answers {
+		AnswerMap[answer] = 0
+	}
+	// 处理res为[]string
+	var ret []string
+	{
+		f := func(r rune) bool {
+			return r == '[' || r == ']'
+		}
+		a := strings.FieldsFunc(string(res), f)
+		sort.Slice(a, func(i, j int) bool {
+			numA, _ := strconv.Atoi(a[i])
+			numB, _ := strconv.Atoi(a[j])
+			return numA < numB
+		})
+		a_len := len(a)
+		for i := 0; i < a_len; i++ {
+			if (i > 0 && a[i-1] == a[i]) || len(a[i]) == 1 {
+				continue
+			}
+			ret = append(ret, a[i])
+		}
+	}
+
+	count := 0
+	for _, re := range ret {
+		select {
+		case <-exitChannel:
+			return
+		default:
+			if _, ok := AnswerMap[re]; ok {
+				count++
+			} else {
+				for ; n > 0; n-- {
+					exitChannel <- errors.New("wrong answer")
+				}
+				return
+			}
+		}
+	}
+
+	if count != len(answers) {
+		for ; n > 0; n-- {
+			exitChannel <- errors.New("wrong answer")
+		}
+	}
+	okChannel <- 0
 }
 
 // initProcess ... 初始化进程
@@ -130,7 +216,6 @@ func processMonitor(p *process, errChannel chan<- error, doneChannel chan<- int)
 	}
 
 	doneChannel <- 1
-	return
 }
 
 func killAllProcess(processSet []*process) {
