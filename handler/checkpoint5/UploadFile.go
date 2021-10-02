@@ -13,6 +13,18 @@ import (
 )
 
 // UploadFile ... 上传全排列.go 文件，线上 ac
+// @Summary 站点5 上传文件 ac
+// @Description 站点5，上传文件
+// @Tags end
+// @Accept  application/json
+// @Produce  application/json
+// @Param file form string true "file"
+// @Param code header string true "代号名"
+// @Param passport header string true "通行证"
+// @Success 200 {object} handler.Response
+// @Failure 401 {object} handler.Response
+// @Failure 500 {object} handler.Response
+// @Router /muxi/backend/computer/examination [post]
 func UploadFile(c *gin.Context) {
 	// log
 

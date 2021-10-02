@@ -21,6 +21,19 @@ func PostMethod(c *gin.Context) {
 
 }
 
+// PutMethod
+// @Summary user use error code to hack this gate
+// @Description 站点3，用 put 方法传输 error code
+// @Tags bank
+// @Accept  application/json
+// @Produce  application/json
+// @Param object body handler.Request true "request"
+// @Param code header string true "代号名"
+// @Param passport header string true "通行证"
+// @Success 200 {object} handler.Response
+// @Failure 401 {object} handler.Response
+// @Failure 500 {object} handler.Response
+// @Router /bank/gate [put]
 func PutMethod(c *gin.Context) {
 	var data handler.Request
 	if err := c.ShouldBindJSON(&data); err != nil {

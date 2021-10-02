@@ -21,7 +21,14 @@ var (
 
 	Text5Scene   string
 	Text5Success string
+
+	ImageBytes []byte
 )
+
+func IamgeInit() string {
+	ImageBytes, _ := ioutil.ReadFile("./pkg/text/MuXieye.jpg")
+	return string(ImageBytes)
+}
 
 // cp5: 全排列答案(3组数据)
 var Answers [3][]string
@@ -52,6 +59,7 @@ func InitText() {
 
 		Answers[0] = strings.Split(string(content), string(rune(10)))
 	}
+	ImageBytes = []byte(readFile("./text/MuXieye.jpg"))
 }
 
 func readFile(file string) string {

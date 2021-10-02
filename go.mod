@@ -14,6 +14,8 @@ require (
 	github.com/shirou/gopsutil v3.21.8+incompatible
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.9.0
+	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2
+	github.com/swaggo/gin-swagger v1.3.2
 	github.com/teris-io/shortid v0.0.0-20171029131806-771a37caa5cf
 	github.com/tklauser/go-sysconf v0.3.9 // indirect
 	github.com/willf/pad v0.0.0-20200313202418-172aa767f2a4
