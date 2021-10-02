@@ -6,13 +6,33 @@ import (
 
 const dir = "./text/"
 
-var Text1Scene string
-var Text5Scene string
+var (
+	Text1Success string
 
+	Text2Success string
+
+	Text3Success string
+
+	Text4scene string
+	Text4Success string
+
+	Text5Scene string
+	Text5Success string
+)
+
+// InitText ... 程序启动时读取文件
 func InitText() {
-	// TODO: get text in another file
-	Text1Scene = readFile(dir + "scene1.txt")
-	Text5Scene = readFile(dir + "scene5.txt")
+	Text1Success = readFile(dir + "checkpoint1/success.txt")
+
+	Text2Success = readFile(dir+"checkpoint2/success.txt")
+
+	Text3Success = readFile(dir + "checkpoint3/success.txt")
+
+	Text4Success = readFile(dir+"checkpoint4/success.txt")
+	Text4scene = readFile(dir+"checkpoint4/scene.txt")
+
+	Text5Scene = readFile(dir + "checkpoint5/scene.txt")
+	Text5Success = readFile(dir + "checkpoint5/success.txt")
 }
 
 func readFile(file string) string {

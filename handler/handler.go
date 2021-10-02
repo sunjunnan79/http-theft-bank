@@ -11,6 +11,12 @@ import (
 	"go.uber.org/zap"
 )
 
+type Request struct {
+	Content string `json:"content"` // 目前只有 checkpoint3 需要这个请求，都放这
+	ExtraInfo string `json:"extra_info"` // 此字段暂时不用
+}
+
+
 type TextInfo struct {
 	Text      string `json:"text"`
 	ExtraInfo string `json:"extra_info"`
