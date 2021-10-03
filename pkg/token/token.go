@@ -2,7 +2,6 @@ package token
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -67,10 +66,10 @@ func ParseRequest(c *gin.Context) (*Context, error) {
 		return &Context{}, ErrMissingHeader
 	}
 
-	var t string
+	// var t string
 	// Parse the header to get the token part.
-	fmt.Sscanf(header, "Bearer %s", &t)
-	return Parse(t, secret)
+	// fmt.Sscanf(header, "Bearer %s", &t)
+	return Parse(header, secret)
 }
 
 // Sign signs the context with the specified secret.
