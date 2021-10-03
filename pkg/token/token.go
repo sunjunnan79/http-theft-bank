@@ -2,7 +2,6 @@ package token
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -58,7 +57,7 @@ func Parse(tokenString string, secret string) (*Context, error) {
 // ParseRequest gets the token from the header and
 // pass it to the Parse function to parses the token.
 func ParseRequest(c *gin.Context) (*Context, error) {
-	header := c.Request.Header.Get("Authorization")
+	header := c.Request.Header.Get("passport")
 
 	// Load the jwt secret from config
 	secret := viper.GetString("jwt_secret")
@@ -67,10 +66,7 @@ func ParseRequest(c *gin.Context) (*Context, error) {
 		return &Context{}, ErrMissingHeader
 	}
 
-	var t string
-	// Parse the header to get the token part.
-	fmt.Sscanf(header, "Bearer %s", &t)
-	return Parse(t, secret)
+	return Parse(header, secret)
 }
 
 // Sign signs the context with the specified secret.
