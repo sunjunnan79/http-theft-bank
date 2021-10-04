@@ -28,11 +28,6 @@ var (
 	Answers [3][]string
 )
 
-func IamgeInit() string {
-	ImageBytes, _ := ioutil.ReadFile("./pkg/text/MuXieye.jpg")
-	return string(ImageBytes)
-}
-
 // InitText ... 程序启动时读取文件
 func InitText() {
 	Text1Success = readFile(dir + "checkpoint1/success.txt")

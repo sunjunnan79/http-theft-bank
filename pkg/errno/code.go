@@ -19,8 +19,14 @@ var (
 
 	// checkpoint3 errors
 	ErrWrongMethod = &Errno{Code: 20301, Message: "你因为使用\"错误的方法\"写入病毒，被银行安全系统识别。很遗憾，你被逮捕了。（请尝试使用\"其他方法\"重新访问)"}
+	ErrNoCode      = &Errno{Code: 20302, Message: "没有上传错误代码，并没有什么发生什么"}
 	ErrMatch       = &Errno{Code: 20305, Message: "the decoded error code is not match."}
 
 	// checkpoint4 errors
-	ErrPicture = &Errno{Code: 20401, Message: "你因视网膜验证失败触发警报被逮捕了。（请上传正确的视网膜）"}
+	ErrPicture  = &Errno{Code: 20401, Message: "你因视网膜验证失败触发警报被逮捕了。（请上传正确的视网膜）"}
+	ErrFormFile = &Errno{Code: 20402, Message: "识别不了你的视网膜，所以什么都没发生"}
+
+	// checkpoint5 errors
+	ErrSaveFile      = &Errno{Code: 20501, Message: "服务器保存上传文件失败"}
+	ErrTestProgramme = &Errno{Code: 20502, Message: "程序不通过，请 debug"}
 )

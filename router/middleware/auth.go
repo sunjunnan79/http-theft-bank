@@ -13,7 +13,10 @@ func AuthMiddleware() gin.HandlerFunc {
 		// Parse the json web token.
 		ctx, err := token.ParseRequest(c)
 		if err != nil {
-			handler.SendResponse(c, errno.ErrTokenInvalid, nil)
+			handler.SendBadRequest(c,
+				errno.ErrTokenInvalid,
+				nil,
+				"your request header doesn't have passport")
 			c.Abort()
 			return
 		}

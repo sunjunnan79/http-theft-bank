@@ -5,6 +5,7 @@ import (
 	"go.uber.org/zap"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
+	"http-theft-bank/pkg/constvar"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/pkg/token"
@@ -33,7 +34,7 @@ func CheckCode(c *gin.Context) {
 		//handler.SendBadRequest(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
 
 		// 仍然返回文本，但是不给 token
-		c.HTML(http.StatusOK,"start.html",nil)
+		c.HTML(http.StatusOK, "start.html", nil)
 		return
 	}
 
@@ -46,6 +47,7 @@ func CheckCode(c *gin.Context) {
 	}
 
 	handler.SetResponseHeader(c, "passport", Token)
+	handler.SetResponseHeader(c, constvar.FragmentField, constvar.Fragment1)
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text: text.Text1Success,
