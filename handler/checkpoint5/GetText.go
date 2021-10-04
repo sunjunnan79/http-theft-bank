@@ -28,9 +28,9 @@ func GetText(c *gin.Context) {
 	log.Info("Message GetText function called.",
 		zap.String("X-Request-Id", util.GetReqID(c)))
 
-	// 解析 token
+	code := c.MustGet("code")
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
-		Text: text.Text5Scene,
+		Text: code.(string) + text.Text5Scene,
 	})
 }

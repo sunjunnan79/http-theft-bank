@@ -32,12 +32,10 @@ func UploadFile(c *gin.Context) {
 	log.Info("Message UploadFile function called.",
 		zap.String("X-Request-Id", util.GetReqID(c)))
 
-	// 解析 token
-
 	// get file
 	file, err := c.FormFile("file")
 	if err != nil {
-		handler.SendBadRequest(c, errno.ErrBind, nil, err.Error())
+		handler.SendBadRequest(c, errno.ErrFormFile, nil, err.Error())
 		return
 	}
 
@@ -47,14 +45,14 @@ func UploadFile(c *gin.Context) {
 	// Upload the file to specific dst.
 	err = c.SaveUploadedFile(file, "./file/"+fileName)
 	if err != nil {
-		handler.SendBadRequest(c, errno.ErrBind, nil, "")
+		handler.SendBadRequest(c, errno.ErrSaveFile, nil, err.Error())
 		return
 	}
 
 	// ac
 	err = testProgramme(fileName, fileNameOnly)
 	if err != nil {
-		handler.SendBadRequest(c, errno.ErrBind, nil, err.Error())
+		handler.SendBadRequest(c, errno.ErrTestProgramme, nil, err.Error())
 		return
 	}
 

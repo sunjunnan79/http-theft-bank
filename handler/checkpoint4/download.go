@@ -1,6 +1,7 @@
 package checkpoint4
 
 import (
+	"encoding/base64"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
@@ -29,7 +30,7 @@ func UserGetImage(c *gin.Context) {
 
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text:      text.Text4scene,
-		ExtraInfo: string(text.ImageBytes),
+		ExtraInfo: base64.StdEncoding.EncodeToString(text.ImageBytes),
 	})
 
 }

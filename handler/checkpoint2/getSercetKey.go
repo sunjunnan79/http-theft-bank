@@ -1,8 +1,10 @@
 package checkpoint2
 
 import (
+	"fmt"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
+	"http-theft-bank/pkg/constvar"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/util"
@@ -29,8 +31,14 @@ func GetSecretKey(c *gin.Context) {
 	log.Info("Message GetSecretKey function called.",
 		zap.String("X-Request-Id", util.GetReqID(c)))
 
-	content := viper.GetString("sercet_key") + " : " + viper.GetString("error_code")
+	content := fmt.Sprintf("secret_key:%s, error_code:%s",
+		viper.GetString("sercet_key"),
+		viper.GetString("error_code"))
+
 	secretKey := encrypt.Base64Encode([]byte(content))
+
+	handler.SetResponseHeader(c, constvar.FragmentField, constvar.Fragment2)
+
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text:      text.Text2Success,
 		ExtraInfo: secretKey,

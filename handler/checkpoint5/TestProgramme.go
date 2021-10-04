@@ -86,6 +86,8 @@ func testProgramme(fileName, fileNameOnly string) error {
 	// 关掉所有文件
 	closeAllFile(processSet)
 
+	// TODO: 检查 stderr 是否不为空和 stdout 是否为空
+
 	exitChannel := make(chan error, len(processSet))
 	okChannel := make(chan int, 1)
 	defer close(okChannel)
@@ -95,17 +97,19 @@ func testProgramme(fileName, fileNameOnly string) error {
 		go checkRes(i, process.Stdout.String(), exitChannel, len(processSet), okChannel)
 	}
 
+	var testErr error
 	for n := 0; n != len(processSet); {
 		select {
-		case err := <-exitChannel:
-			return err
+		case testErr = <-exitChannel:
+			// return err
 		case <-okChannel:
 			n++
 		}
 	}
-	return nil
+	return testErr
 }
 
+// checkRes ... 目前并发是有问题的，给 exitChannel 发信号并不能保证每个 channel 都能拿到
 func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan int) {
 
 	answers := text.Answers[num]
@@ -139,6 +143,7 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 	for _, re := range ret {
 		select {
 		case <-exitChannel:
+			okChannel<-1
 			return
 		default:
 			if _, ok := AnswerMap[re]; ok {
@@ -147,6 +152,7 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 				for ; n > 0; n-- {
 					exitChannel <- errors.New("wrong answer")
 				}
+				okChannel<-1
 				return
 			}
 		}
@@ -157,7 +163,7 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 			exitChannel <- errors.New("wrong answer")
 		}
 	}
-	okChannel <- 0
+	okChannel <- 1
 }
 
 // initProcess ... 初始化进程

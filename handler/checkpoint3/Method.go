@@ -2,6 +2,7 @@ package checkpoint3
 
 import (
 	"http-theft-bank/log"
+	"http-theft-bank/pkg/constvar"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/util"
 	"strings"
@@ -53,6 +54,11 @@ func PutMethod(c *gin.Context) {
 		return
 	}
 
+	if data.Content == "" {
+		handler.SendBadRequest(c, errno.ErrNoCode, nil, "where's your error code?")
+		return
+	}
+
 	errorCode, err := encrypt.AESDecodeAfterBase64([]byte(data.Content), []byte(viper.GetString("sercet_key")))
 	if err != nil {
 		handler.SendBadRequest(c, errno.ErrDecode, nil, err.Error())
@@ -64,6 +70,7 @@ func PutMethod(c *gin.Context) {
 		return
 	}
 
+	handler.SetResponseHeader(c, constvar.FragmentField, constvar.Fragment3)
 	handler.SendResponse(c, errno.OK, handler.TextInfo{
 		Text: text.Text3Success,
 	})
