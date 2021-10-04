@@ -3,8 +3,8 @@ package config
 import (
 	"strings"
 
-	"github.com/muxih4ck/Go-Web-Application-Template/util"
 	"github.com/spf13/viper"
+	"http-theft-bank/util"
 )
 
 type Config struct {

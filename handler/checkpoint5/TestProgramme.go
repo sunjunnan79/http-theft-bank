@@ -21,13 +21,6 @@ type process struct {
 	File   *os.File // 用于标志打开过的文件，方便关闭
 }
 
-// TODO: 测试用例个数 n 从配置文件中导入
-var TestResult = [][]string{
-	{"1234", "12345", "12345"},
-	{"2345", "12345", "12344"},
-	{"54321", "2134"},
-}
-
 // TODO: 测试文件名从配置文件中导入
 var TestFiles = []string{
 	"./file/testSample/test1.txt",
@@ -133,8 +126,8 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 			numB, _ := strconv.Atoi(a[j])
 			return numA < numB
 		})
-		a_len := len(a)
-		for i := 0; i < a_len; i++ {
+		aLen := len(a)
+		for i := 0; i < aLen; i++ {
 			if (i > 0 && a[i-1] == a[i]) || len(a[i]) == 1 {
 				continue
 			}
@@ -206,7 +199,7 @@ func killAllProcess(processSet []*process) {
 	for i := 0; i < len(processSet); i++ {
 		err := syscall.Kill(-processSet[i].Cmd.Process.Pid, syscall.SIGKILL)
 		if err != nil {
-			// log
+			// TODO:log
 			fmt.Println("kill all process failed: " + err.Error())
 		}
 	}
@@ -218,7 +211,7 @@ func closeAllFile(processSet []*process) {
 		err := processSet[i].File.Close()
 		if err != nil {
 			// log
-			fmt.Println("kill all process failed: " + err.Error())
+			fmt.Println("close all file failed: " + err.Error())
 		}
 	}
 }
