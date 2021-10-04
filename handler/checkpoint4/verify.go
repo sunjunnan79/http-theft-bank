@@ -1,17 +1,16 @@
 package checkpoint4
 
 import (
+	"bytes"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
 	"http-theft-bank/pkg/constvar"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/util"
-	"path"
-	"strings"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
+	"io/ioutil"
 )
 
 // VerifyParameter
@@ -32,34 +31,31 @@ func VerifyParameter(c *gin.Context) {
 		zap.String("X-Request-Id", util.GetReqID(c)))
 
 	// FormFile方法会读取参数“upload”后面的文件名，返回值是一个File指针，和一个FileHeader指针，和一个err错误。
-	header, err := c.FormFile("file")
+	file, err := c.FormFile("file")
 	if err != nil {
 		handler.SendBadRequest(c, errno.ErrFormFile, "", "表单字段错误或缺失，请统一改为file")
 		return
 	}
-	// header调用Filename方法，就可以得到文件名
-	filename := header.Filename
 
-	// 开始检验上传的文件是否合法
-	ext := GetExt(filename)
+	fileContent, err := file.Open()
+	if err != nil {
+		handler.SendBadRequest(c, errno.ErrFormFile, nil, "")
+		return
+	}
 
-	// 得到没有后缀的文件名
-	filename = strings.TrimSuffix(filename, ext)
+	contentByte, err := ioutil.ReadAll(fileContent)
+	if err != nil {
+		handler.SendBadRequest(c, errno.ErrFormFile, nil, "")
+		return
+	}
 
-	// 判断文件名是否合法
-	tag := strings.ContainsAny(filename, "MuXieye")
-	if tag {
-		handler.SendResponse(c, errno.OK, handler.TextInfo{
-			Text: text.Text4Success,
-		})
+	if !bytes.Equal(contentByte, text.ImageBytes) {
+		handler.SendBadRequest(c, errno.ErrPicture, nil, "")
 		return
 	}
 
 	handler.SetResponseHeader(c, constvar.FragmentField, constvar.Fragment4)
-	handler.SendBadRequest(c, errno.ErrPicture, nil, "")
-}
-
-// GetExt ... 获取文件后缀
-func GetExt(fileName string) string {
-	return path.Ext(fileName)
+	handler.SendResponse(c, errno.OK, handler.TextInfo{
+		Text: text.Text4Success,
+	})
 }

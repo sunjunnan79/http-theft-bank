@@ -143,7 +143,7 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 	for _, re := range ret {
 		select {
 		case <-exitChannel:
-			okChannel<-1
+			okChannel <- 1
 			return
 		default:
 			if _, ok := AnswerMap[re]; ok {
@@ -152,7 +152,7 @@ func checkRes(num int, res string, exitChannel chan error, n int, okChannel chan
 				for ; n > 0; n-- {
 					exitChannel <- errors.New("wrong answer")
 				}
-				okChannel<-1
+				okChannel <- 1
 				return
 			}
 		}
