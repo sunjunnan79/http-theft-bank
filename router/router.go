@@ -31,6 +31,8 @@ func Load(g *gin.Engine, mw ...gin.HandlerFunc) *gin.Engine {
 		c.JSON(http.StatusNotFound, "去哪呢？没路了哦！")
 	})
 
+	g.LoadHTMLFiles("./text/start.html")
+
 	g.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	organization := g.Group("/api/v1/organization")

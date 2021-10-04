@@ -3,4 +3,4 @@
 1.请用go语言编写一个程序，访问本网址。
 2.访问成功后，网站会给你返回信息，在header中找到你的passport。
 3.解析你的passport，并将解析后的passport加入到你以后的请求头中。
-4.完成上述步骤后，用代码访问  /organization/secret_key，注意查收其中response的信息。
+4.完成上述步骤后，用代码访问 /organization/secret_key，注意查收其中response的信息。

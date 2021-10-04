@@ -1,16 +1,15 @@
 package checkpoint1
 
 import (
-	"errors"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"http-theft-bank/handler"
 	"http-theft-bank/log"
 	"http-theft-bank/pkg/errno"
 	"http-theft-bank/pkg/text"
 	"http-theft-bank/pkg/token"
 	"http-theft-bank/util"
-
-	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
+	"net/http"
 )
 
 // CheckCode ... header的 code 生成token
@@ -30,8 +29,11 @@ func CheckCode(c *gin.Context) {
 
 	code := c.Request.Header.Get("code")
 	if code == "" {
-		err := errors.New("未接收到code字段")
-		handler.SendBadRequest(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
+		//err := errors.New("未接收到code字段")
+		//handler.SendBadRequest(c, err, "", "请在request头添加 code 字段，值为你的组织代号名")
+
+		// 仍然返回文本，但是不给 token
+		c.HTML(http.StatusOK,"start.html",nil)
 		return
 	}
 
