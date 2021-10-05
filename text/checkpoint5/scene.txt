@@ -18,7 +18,7 @@ func permute(nums []int) [][]int {
 }
 
 func main() {
-    n := 0
+    var n int
 	fmt.Scanf("%d", &n)
 
 	testSlice := make([]int, n)
