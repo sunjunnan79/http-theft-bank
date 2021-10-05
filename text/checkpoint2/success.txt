@@ -4,4 +4,5 @@
 不需要担心，两者我们都为你提供了，你只需要解析 response 中的密文（在 ExtraInfo 中）来得到它们。
 你现在的任务：
 解析密文，获取 error_code 和 secret_key
-并使用 secret_key 加密过的 error_code 以 "正确的方法" 发送至 /api/v1/bank/gate。同时注意response的信息。
+使用 secret_key 加密 error_code
+然后将加密过的 error_code 放入 请求body 并以 "正确的请求方法" 发送至 http://http-theft-bank.gtainccnu.muxixyz.com/api/v1/bank/gate , 同时注意response的信息。

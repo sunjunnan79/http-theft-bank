@@ -1,6 +1,7 @@
 ，真亏你能来到这里！在你眼前的就是最后的密码门了。
 但是密码位数未知，看来只能通过全排列程序去暴力破解。
->要求标准输入（fmt.Scanf）一个数n，再标准输入n个不重复的数字，最后标准输出（fmt.Println）所有枚举可能（切片类型），示例如下：
+
+>示例如下：
 ============================================
 输入：
 3
@@ -8,3 +9,23 @@
 输出：
 [[1 2 3][1 3 2][2 1 3][2 3 1][3 1 2][3 2 1]]
 ============================================
+
+>代码模板:
+
+func permute(nums []int) [][]int {
+    // insert your code
+
+}
+
+func main() {
+    n := 0
+	fmt.Scanf("%d", &n)
+
+	testSlice := make([]int, n)
+    // 标准输入n个不重复的数字
+
+    res := permute(testSlice)
+    fmt.Println(res)
+}
+
+请在完成此程序后上传至 http://http-theft-bank.gtainccnu.muxixyz.com/api/v1/muxi/backend/computer/examination 来破解最后的密码门

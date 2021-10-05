@@ -1,1 +1,1 @@
-干的漂亮！你已经突破了第一扇门，请继续访问 /api/v1/bank/iris_recognition_gate。
+干的漂亮！你已经突破了第一扇门，请继续访问 http://http-theft-bank.gtainccnu.muxixyz.com/api/v1/bank/iris_recognition_gate 。
