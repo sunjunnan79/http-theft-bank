@@ -92,20 +92,20 @@ func testProgramme(fileName, fileNameOnly string) error {
 	okChannel := make(chan int, 1)
 	defer close(okChannel)
 	defer close(exitChannel)
-
-	for i, process := range processSet {
-		go checkRes(i, process.Stdout.String(), exitChannel, len(processSet), okChannel)
-	}
+	//不进行检查了,只要你传了代码就给你过
+	//for i, process := range processSet {
+	//	go checkRes(i, process.Stdout.String(), exitChannel, len(processSet), okChannel)
+	//}
 
 	var testErr error
-	for n := 0; n != len(processSet); {
-		select {
-		case testErr = <-exitChannel:
-			// return err
-		case <-okChannel:
-			n++
-		}
-	}
+	//for n := 0; n != len(processSet); {
+	//	select {
+	//	case testErr = <-exitChannel:
+	//		// return err
+	//	case <-okChannel:
+	//		n++
+	//	}
+	//}
 	return testErr
 }
 

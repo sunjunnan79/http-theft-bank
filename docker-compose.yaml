@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  muxihacker:
+    image: registry.cn-hangzhou.aliyuncs.com/muxi/muxi-backend-task-muxihacker:v1.0.0
+    container_name: muxihacker
+    ports:
+      - "8080:8080"  # 使用 expose 代替 ports，因为 Nginx 会在同一网络下访问容器
+    restart: always
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"  # 将本机的80端口映射到nginx容器的80端口
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  # 挂载自定义的nginx配置文件
+    depends_on:
+      - muxihacker  # 确保 nginx 在 muxihacker 后启动
